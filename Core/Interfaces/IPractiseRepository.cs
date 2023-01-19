@@ -5,7 +5,7 @@ namespace Core.Interfaces
 	public interface IPractiseRepository
 	{
 		Task<List<Team>> GetAll();
-		Task<Team> GetById(int id);
+		Task<Team>? GetById(int id);
 		Task<List<TeamsLeaguesView>> GetSQLView();
 		Task<Team> GetTeamByName(string teamName);
 		Task<Team> Create(Team team);

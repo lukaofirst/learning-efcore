@@ -63,14 +63,22 @@ namespace Infra.Repositories
 			return sqlViewResult;
 		}
 
-		public async Task<Team> GetById(int id)
+		public async Task<Team>? GetById(int id)
 		{
-			// LINQ Method
+            // LINQ Method
 			var entitiesLinqMethod = await _context.Teams!
-				.Include(x => x.TeamMatch)
-				.AsNoTracking()
-				.Where(x => x.Id == id)
-				.SingleOrDefaultAsync();
+                .Where(x => x.Id == id)
+                .Include(x => x.TeamMatch)!
+                .ThenInclude(x => x.Match)
+                .FirstOrDefaultAsync();
+
+            if (entitiesLinqMethod == null) return null!;
+
+            if (entitiesLinqMethod.TeamMatch.Any())
+            {
+                var matchList = entitiesLinqMethod.TeamMatch.Select(x => x.Match).ToList();
+                entitiesLinqMethod.Matches = matchList!;
+            }
 
 			// LINQ Query
 			var entitiesLinqQuery = await (
