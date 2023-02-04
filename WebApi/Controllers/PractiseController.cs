@@ -41,11 +41,12 @@ namespace WebApi.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public async Task<IActionResult> GetById(int id)
+		public async Task<IActionResult> GetById(int id, string? teamName, int? leagueId)
 		{
-			var entity = await _practiseRepository.GetById(id);
+			var entity = await _practiseRepository.GetById(id)!;
+            //var entity = await _practiseRepository.GetByIdAndWithOptionalParameters(id, teamName, leagueId)!;
 
-			return Ok(entity);
+            return Ok(entity);
 		}
 
 		[HttpPost]

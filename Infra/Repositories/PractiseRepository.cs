@@ -93,6 +93,28 @@ namespace Infra.Repositories
 
 			return entitiesLinqMethod!;
 		}
+		
+		public async Task<Team>? GetByIdAndWithOptionalParameters(int id, string? teamName, int? leagueId)
+        {
+            // LINQ Method
+			var entitiesLinqMethod = await _context.Teams!
+                .Where(x => x.Id == id && 
+					(string.IsNullOrEmpty(teamName) || x.Name!.Equals(teamName)) &&
+					(leagueId == null || x.LeagueId.Equals(leagueId))
+				)
+                .FirstOrDefaultAsync();
+
+			// LINQ Query
+			var entitiesLinqQuery = await (
+				from team in _context.Teams
+				where team.Id == id &&
+					(string.IsNullOrEmpty(teamName) || team.Name!.Equals(teamName)) &&
+					(leagueId == null || team.LeagueId.Equals(leagueId))
+				select team
+			).FirstOrDefaultAsync();
+
+			return entitiesLinqMethod!;
+		}
 
 		public async Task<Team> GetTeamByName(string teamName)
 		{

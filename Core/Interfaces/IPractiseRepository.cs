@@ -6,7 +6,8 @@ namespace Core.Interfaces
 	{
 		Task<List<Team>> GetAll();
 		Task<Team>? GetById(int id);
-		Task<List<TeamsLeaguesView>> GetSQLView();
+        Task<Team>? GetByIdAndWithOptionalParameters(int id, string? teamName, int? leagueId);
+        Task<List<TeamsLeaguesView>> GetSQLView();
 		Task<Team> GetTeamByName(string teamName);
 		Task<Team> Create(Team team);
 		Task<Team> Update(Team team);
